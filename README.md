@@ -189,7 +189,7 @@ graph TD
 
 ## Résultat
 
-[![demo video](docs/demo_video_big_data_playground.png)](docs/demo_video_big_data_playground.webp)
+[![demo video](docs/demo_video_big_data_playground.png)](docs/demo_video_big_data_playground.webm)
 
 ## Commandes utiles
 ```bash
