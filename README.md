@@ -83,7 +83,8 @@ Le lancement se fait via `docker-compose` en **utilisant** des images Docker off
 
 Une configuration de base est fournie dans le dossier `hadoop_conf/`, partagé par Hadoop et Spark.
 
-Voici l’architecture des conteneurs :
+### Architecture
+
 ![big_data_playground.drawio](docs/big_data_playbround.drawio.png)
 
 ### Lancement manuel
