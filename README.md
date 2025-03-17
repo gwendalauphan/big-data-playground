@@ -2,6 +2,8 @@
 
 Le projet propose un **environnement de développement** complet pour aborder les technologies Big Data, en s’appuyant sur Spark, Scala et Hadoop (HDFS). Il facilite la **prise en main** du développement en Scala ainsi que la **mise en place** d’un cluster Hadoop et Spark, afin de **comprendre** ces concepts, de les expérimenter et d’observer leur fonctionnement concret.
 
+🚀 **DEMO** → [demo video](#résultat)
+
 Rappelons rapidement les **technologies**:
 - **Hadoop** : Projet open source qui fournit un ensemble de frameworks Big Data
 - **HDFS** : Hadoop Distributed File System, un système de fichiers distribué
@@ -186,7 +188,7 @@ graph TD
 
 ## Résultat
 
-[demo video](docs/demo_video_big_data_playground.webm)
+![demo video](docs/demo_video_big_data_playground.webm)
 
 ## Commandes utiles
 ```bash
