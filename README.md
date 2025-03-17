@@ -19,6 +19,7 @@ Rappelons rapidement les **technologies**:
     - [Utilisation du Toolkit Docker](#utilisation-du-toolkit-docker)
       - [Configuration](#configuration)
   - [Hadoop \& Spark](#hadoop--spark)
+    - [Architecture](#architecture)
     - [Lancement manuel](#lancement-manuel)
 - [Demo](#demo)
   - [Déroulement de la démo](#déroulement-de-la-démo)
