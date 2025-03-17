@@ -7,8 +7,8 @@ project/project/*
 target/scala-2.11
 derby.log
 
-hadoop/hadoop_datanode
-hadoop/hadoop_namenode
+hadoop-spark/hadoop_datanode
+hadoop-spark/hadoop_namenode
 
 **.env
 **.log

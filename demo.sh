@@ -2,6 +2,36 @@
 
 set -eo pipefail
 
+help() {
+    echo "Usage: $0 [--rm]"
+    echo "  --rm: Remove the containers after execution."
+    echo "  --force-recreate: Force recreate the containers."
+    exit 1
+}
+
+remove_containers=false
+option=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        help)
+            help
+            ;;
+        --rm)
+            remove_containers=true
+            shift
+            ;;
+        --force-recreate)
+            option="--force-recreate"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            help
+            ;;
+    esac
+done
+
 JAVA_VERSION=11.0.14.1
 SBT_VERSION=1.6.2
 SCALA_VERSION=2.12.15
@@ -13,7 +43,7 @@ classMainName="demo.demoMain"
 jarNamePrefix="${packageName}_${SCALA_SHOT_VERSION}"
 
 dir_path=$(dirname $(realpath $0))
-localjarDirPath="$dir_path/scala/target/scala-$SCALA_SHOT_VERSION"
+localjarDirPath="$dir_path/toolkit/target/scala-$SCALA_SHOT_VERSION"
 
 jarFileName=$(ls $localjarDirPath | grep $jarNamePrefix)
 localjarFilepath="$localjarDirPath/$jarFileName"
@@ -45,15 +75,15 @@ echo
 
 # Construire le JAR
 echo_log "Building the JAR file..."
-./scala/sbt.sh package JAVA_VERSION=$JAVA_VERSION SBT_VERSION=$SBT_VERSION SCALA_VERSION=$SCALA_VERSION
+./toolkit/sbt.sh package JAVA_VERSION=$JAVA_VERSION SBT_VERSION=$SBT_VERSION SCALA_VERSION=$SCALA_VERSION
 echo_log "JAR file built successfully."
 echo
 sleep 1
 
 # Démarrer les conteneurs
 echo_log "Starting the containers..."
-cd hadoop
-docker compose up -d
+cd hadoop-spark
+docker compose up -d $option
 cd ..
 echo
 echo_log "Waiting 10 seconds for the containers to start..."
@@ -81,7 +111,7 @@ echo_log "JAR file copied to HDFS."
 echo
 sleep 1
 
-# Exécuter le JAR
+# Soumettre le job spark (exécuter le JAR)
 echo_log "Submitting the JAR file to Spark..."
 docker exec -it spark-master bash -c "spark-submit --master spark://spark-master:7077 --class ${classMainName}  hdfs://hadoop-namenode:9000${hdfsJarFilepath}"
 echo_log "Execution completed."
@@ -94,12 +124,15 @@ docker exec -it hadoop-namenode bash -c "hdfs dfs -ls -R /user/spark/${rootPath}
 echo
 sleep 1
 
-# Arrêter les conteneurs
-echo_log "Stopping the containers..."
-cd hadoop
-docker compose down -v
-cd ..
-echo_log "Containers stopped."
-echo
-sleep 1
+
+if [ "$remove_containers" = true ]; then
+    # Arrêter les conteneurs
+    echo_log "Stopping the containers..."
+    cd hadoop-spark
+    docker compose down -v
+    cd ..
+    echo_log "Containers stopped."
+    echo
+    sleep 1
+fi
 

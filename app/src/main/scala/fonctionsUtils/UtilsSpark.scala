@@ -53,13 +53,17 @@ object UtilsSpark {
    * @param spark: SparkSession -
    * @param log4jlogger: Logger - Logger de la session spark
    * @param chemin: String - Chemin du fichier ou repertoire a verifier
-   * @return Unit (rien)
+   * @return Boolean - True si le chemin existe, False sinon
    */
-  def controlExistenceChemin (spark:SparkSession, log4jlogger:Logger, chemin:String) : Unit = {
+
+  def controlExistenceChemin(spark: SparkSession, log4jlogger: Logger, chemin: String): Boolean = {
     val fs = FileSystem.get(spark.sparkContext.hadoopConfiguration)
-    if (! fs.exists (new Path(chemin) ) ) {
-      log4jlogger.info (chemin + " doesn't exist ")
-      sys.exit (0)
+    if (!fs.exists(new Path(chemin))) {
+      log4jlogger.info(chemin + " doesn't exist")
+      false
+    } else {
+      log4jlogger.info(chemin + " exists")
+      true
     }
   }
 
